@@ -12,7 +12,8 @@
 - - (LDFLAGS += --code-loc 0x83C0)
 
 ## stm8-bootloader
-Serial bootloader for STM8S and STM8L microcontrollers. A detailed write-up on this bootloader is posted [here](https://lujji.github.io/blog/serial-bootloader-for-stm8). (Backup PDF in the Doc folder)
+Serial bootloader for STM8S and STM8L microcontrollers. A detailed write-up on this bootloader is posted [here](https://lujji.github.io/blog/serial-bootloader-for-stm8).
+(Backup PDF in the Doc folder)
 
 ## Features
 
