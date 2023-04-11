@@ -6,7 +6,7 @@
 - UART_Software: UART1 TX pin 15; RX pin 14 (9600 bauds) 935 bytes (by timers)
 - - Application address 0x83C0 (Free 7257 bytes)
 
-- No bootloader: application address 0x8000
+- No bootloader: application address 0x8000 (Free 8192 bytes)
 
 ## stm8-bootloader
 Serial bootloader for STM8S and STM8L microcontrollers. A detailed write-up on this bootloader is posted [here](https://lujji.github.io/blog/serial-bootloader-for-stm8).
