@@ -15,8 +15,9 @@ CFLAGS  += -DF_CPU=$(F_CPU)UL -I. -I$(LIBDIR)
 CFLAGS  += --stack-auto --noinduction --use-non-free
 LDFLAGS  = -m$(ARCH) -l$(ARCH) --out-fmt-ihx
 ## RELOCATE_IVT set to 0:
-#LDFLAGS += --code-loc 0x8200
+##LDFLAGS += --code-loc 0x8200
 ## RELOCATE_IVT set to 1:
+##LDFLAGS += --code-loc 0x8000
 LDFLAGS += --code-loc 0x8280
 
 all: $(TARGET)

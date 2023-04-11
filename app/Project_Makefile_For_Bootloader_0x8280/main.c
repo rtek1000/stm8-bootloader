@@ -1,14 +1,15 @@
 #include <stdint.h>
-#include "../stm8.h"
+#include "stm8.h"
 
-#define LED_PIN  4
+// PA.3
+#define LED_PIN  3
 
 void dummy_isr() __interrupt(29) __naked { ; }
 
 void tim4_isr() __interrupt(TIM4_ISR) {
     static uint16_t ctr = 0;
     if (++ctr >= 64) {
-        PD_ODR ^= (1 << LED_PIN);
+        PA_ODR ^= (1 << LED_PIN);
         ctr = 0;
     }
     TIM4_SR &= ~(1 << TIM4_SR_UIF);
@@ -30,8 +31,8 @@ static void timer_config() {
 }
 
 void main() {
-    PD_DDR |= (1 << LED_PIN);
-    PD_CR1 |= (1 << LED_PIN);
+    PA_DDR |= (1 << LED_PIN);
+    PA_CR1 |= (1 << LED_PIN);
 
     enable_interrupts();
     timer_config();
