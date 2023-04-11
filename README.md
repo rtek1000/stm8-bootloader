@@ -1,11 +1,15 @@
 ## Versions:
+(STM8S003F3P6 pinout)
 - UART_Hardware: UART1 TX pin 2; RX pin 3 (115200 bauds) 547 bytes (original code)
-- - Application address 0x8280
+- - Application address 0x8280 (Free 7645 bytes)
 
 - UART_Software: UART1 TX pin 15; RX pin 14 (9600 bauds) 935 bytes (by timers)
-- - Application address 0x83C0
+- - Application address 0x83C0 (Free 7257 bytes)
 
-- No bootloader: application address 0x8000
+- No bootloader: application address 0x8000 (Free 8192 bytes)
+
+- See also Makefile for changing application address
+- - (LDFLAGS += --code-loc 0x83C0)
 
 ## stm8-bootloader
 Serial bootloader for STM8S and STM8L microcontrollers. A detailed write-up on this bootloader is posted [here](https://lujji.github.io/blog/serial-bootloader-for-stm8).
