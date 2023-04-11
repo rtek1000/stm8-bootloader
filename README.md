@@ -1,8 +1,8 @@
 ## Versions:
-- UART_Hardware: UART1 TX pin 2; RX pin 3 (115200 bauds) 547 bytes
+- UART_Hardware: UART1 TX pin 2; RX pin 3 (115200 bauds) 547 bytes (original code)
 - - Application address 0x8280
 
-- UART_Software: UART1 TX pin 15; RX pin 14 (9600 bauds) 935 bytes
+- UART_Software: UART1 TX pin 15; RX pin 14 (9600 bauds) 935 bytes (by timers)
 - - Application address 0x83C0
 
 - No bootloader: application address 0x8000
