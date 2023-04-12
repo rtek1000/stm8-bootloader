@@ -77,6 +77,10 @@ $ cd app && make
 $ python ../uploader/boot.py -p /dev/ttyUSB0 firmware.bin
 ```
 
+- W1209 board schematic:
+
+![image](https://raw.githubusercontent.com/rtek1000/stm8-bootloader/master/Doc/thermostat-w1209.jpg)
+
 -------------
 
 Note: This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
