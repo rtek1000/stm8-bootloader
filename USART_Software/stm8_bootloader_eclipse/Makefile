@@ -8,7 +8,11 @@ FAMILY  ?= STM8S
 
 ARCH     = stm8
 
-TARGET  ?= main.ihx
+ProjectName            :=$(project_name)
+SourceDirectory        :=.
+BuildDirectory         :=Release
+
+TARGET  ?= $(ProjectName).ihx
 
 SRCS    := $(wildcard *.c)
 ASRCS   := $(wildcard *.s)
@@ -16,37 +20,54 @@ ASRCS   := $(wildcard *.s)
 OBJS     = $(SRCS:.c=.rel)
 OBJS    += $(ASRCS:.s=.rel)
 
+OBJSlinker     = $(addprefix $(BuildDirectory)/,$(SRCS:.c=.rel))
+OBJSlinker    += $(addprefix $(BuildDirectory)/,$(ASRCS:.s=.rel))
+
+list_c_files           := $(notdir $(wildcard $(SourceDirectory)/*.c))
+list_s_files           := $(notdir $(wildcard $(SourceDirectory)/*.s))
+
+list_files_rel          = $(addprefix $(BuildDirectory)/,$(patsubst %,%.rel,$(list_c_files)))
+list_files_rel         += $(addprefix $(BuildDirectory)/,$(patsubst %,%.rel,$(list_s_files)))
+
 CC       = sdcc
 LD       = sdld
 AS       = sdasstm8
+##ASFLAGS  = -plosgff
+ASFLAGS  = -plsgff -o $(BuildDirectory)/$@
 OBJCOPY  = sdobjcopy
-ASFLAGS  = -plosgff
 CFLAGS   = -m$(ARCH) -p$(MCU) -D$(FAMILY) -I.
-CFLAGS  += --stack-auto --noinduction --use-non-free --noinvariant --opt-code-size
+CFLAGS  += --stack-auto --noinduction --use-non-free --noinvariant --opt-code-size -o $(BuildDirectory)/$@
+#CFLAGS  += --stack-auto --noinduction --use-non-free -o $(BuildDirectory)/$@
+# -o $(BuildDirectory)/$@
 LDFLAGS  = -m$(ARCH) -l$(ARCH) --out-fmt-ihx
 LDFLAGS += -Wl-bIVT=0x8000 -Wl-bGSINIT=0x8080
 
 all: $(TARGET) size
 
 $(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $@
+	@echo Linking $(TARGET):;
+	$(CC) -o $(BuildDirectory)/$@ $(OBJSlinker) $(LDFLAGS) 
 
 %.rel: %.s
+	@echo Compiling files *.s:;
 	$(AS) $(ASFLAGS) $<
 
 %.rel: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@echo Compiling files *.c:;
+	$(CC) $(CFLAGS) -c $< 
 
 flash: $(TARGET)
 	stm8flash -c stlinkv2 -p $(MCU) -w $(TARGET)
 
 clean:
-	rm -f *.map *.rel *.ihx *.o *.sym *.lk *.lst *.rst *.cdb *.bin *.asm
+	@echo Clean $(BuildDirectory)/:;
+	rm -f $(BuildDirectory)/*.*
+#	rm -f *.map *.rel *.ihx *.o *.sym *.lk *.lst *.rst *.cdb *.bin *.asm
 
 size:
-	@$(OBJCOPY) -I ihex --output-target=binary $(TARGET) $(TARGET).bin
+	@$(OBJCOPY) -I ihex --output-target=binary $(BuildDirectory)/$(TARGET) $(BuildDirectory)/$(TARGET).bin
 	@echo "-----\nImage size:"
-	@stat -L -c %s $(TARGET).bin
+	@stat -L -c %s $(BuildDirectory)/$(TARGET).bin
 
 ## @TODO: separate option-bytes for stm8s and stm8l!
 # enable write-protection on first 10 pages
