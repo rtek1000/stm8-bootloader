@@ -54,6 +54,8 @@ $ make opt-set
 
 ## Uploading the firmware
 
+- Bootloader: [UART_Hardware](https://github.com/rtek1000/stm8-bootloader/tree/master/UART_Hardware)
+
 There is a demo application inside `app` directory (0x8280) which toggles PD4 via interrupts. To upload the application short PD3 to ground, power-cycle the MCU and run the uploader utility. DTR pin on UART-USB converter (TTL level only: 5V) can be connected to RESET pin on STM8 for automatic reset.
 
 (boot.py: 115200 bauds)
@@ -63,6 +65,8 @@ $ cd app && make
 $ python ../uploader/boot.py -p /dev/ttyUSB0 firmware.bin
 ```
 ## Uploading the firmware (board W1209)
+
+- Bootloader: [USART_Software](https://github.com/rtek1000/stm8-bootloader/tree/master/USART_Software)
 
 There is a demo application inside `app` directory (0x83C0) which toggles PA3 (Relay) via interrupts. To upload the application short PC3 to ground (press SET button), power-cycle the MCU and run the uploader utility. DTR pin on UART-USB converter (TTL level only: 5V) can be connected to RESET pin on STM8 for automatic reset (RESET connection is close to the display).
 
