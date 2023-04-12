@@ -219,8 +219,7 @@ inline void ram_cpy() {
         f_ram[i] = ((uint8_t *) ram_flash_write_block)[i];
 }
 
-//void bootloader_main() {
-void main(void) {
+void bootloader_main() {
 //	while(1){
 //		if(received_data_flag == true){
 //			received_data_flag = false;

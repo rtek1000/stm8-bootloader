@@ -1,84 +1,72 @@
-##
-## Edited manually by RTEK1000 (Mar/31/2023)
-## Based in: https://github.com/mister-grumbler/w1209-firmware/blob/master/Makefile
-##
+## STM8S
+MCU     ?= stm8s003f3
+FAMILY  ?= STM8S
 
-BuildDirectory         :=Release
-IncludeDirectory       :=Core/Inc
-IncludeSwitch          :=-I
-LibrarySwitch          :=-l stm8
-LibraryPathSwitch      :=-L
-LinkerName             :=/usr/bin/sdcc
-LinkOptions            :=--out-fmt-ihx -mstm8
-MakeDirCommand         :=mkdir -p
-mkfile_path            :=$(abspath $(lastword $(MAKEFILE_LIST)))
-mkfile_dir             :=$(dir $(mkfile_path))
-ObjectSuffix           :=.rel
-OutputSwitch           :=-o
-ObjectSwitch           :=-o
-ProjectName            :=$(project_name)
-OutputFile             :=$(BuildDirectory)/$(ProjectName).ihx
-OutputFileBin          :=$(BuildDirectory)/$(ProjectName).bin
-SourceDirectory        :=Core/Src
-SourceDirectoryRule    :=$(SourceDirectory)/
-GccSourceDirectory     :=$(SourceDirectory)
-IncludePath            :=$(IncludeSwitch)$(SourceDirectory) $(IncludeSwitch)$(IncludeDirectory)
-SourceSwitch           :=-c
-SOURCES                :=$(call rwildcard,$(SourceDirectory),*.c)
+## STM8L
+# MCU     ?= stm8l051f3
+# FAMILY  ?= STM8L
 
-##
-## Common variables
-## CC and CFLAGS can be overriden using an environment variables
-##
-CC                     := /usr/bin/sdcc
-CFLAGS                 := $(LibrarySwitch) -mstm8
+ARCH     = stm8
 
+TARGET  ?= main.ihx
 
-##
-## User defined environment variables
-##
-list_files_c           := $(notdir $(wildcard $(SourceDirectory)/*.c))
-list_files_rel         := $(addprefix $(BuildDirectory)/,$(patsubst %,%.rel,$(list_files_c)))
-		
-##
-## Main Build Targets 
-##
-.PHONY: clean makeBuildDirectory all
+SRCS    := $(wildcard *.c)
+ASRCS   := $(wildcard *.s)
 
-all:
-	@echo Compiling files:;
-	@for i in $(list_files_c); do \
-		echo Compiling: $$i to $$i.rel; \
-		$(CC) \
-		$(SourceSwitch) $(SourceDirectoryRule)"$$i" \
-		$(CFLAGS) \
-		$(ObjectSwitch)$(BuildDirectory)/$$i$(ObjectSuffix) \
-		$(IncludePath); \
-	done
-	@echo Done.;
-	@echo Linking all *.rel files. Generating $(project_name).ihx file:;
-	$(LinkerName) $(OutputSwitch)$(OutputFile) $(list_files_rel) $(LinkOptions)
-	@echo Done.;
-	@echo Generating $(project_name).bin file:;
-	objcopy -Iihex -Obinary $(OutputFile) $(OutputFileBin)
-	@echo Done.;
+OBJS     = $(SRCS:.c=.rel)
+OBJS    += $(ASRCS:.s=.rel)
 
-##
-## Make Build Directory
-##
+CC       = sdcc
+LD       = sdld
+AS       = sdasstm8
+OBJCOPY  = sdobjcopy
+ASFLAGS  = -plosgff
+CFLAGS   = -m$(ARCH) -p$(MCU) -D$(FAMILY) -I.
+CFLAGS  += --stack-auto --noinduction --use-non-free --noinvariant --opt-code-size
+LDFLAGS  = -m$(ARCH) -l$(ARCH) --out-fmt-ihx
+LDFLAGS += -Wl-bIVT=0x8000 -Wl-bGSINIT=0x8080
 
-makeBuildDirectory:
-	@echo Checking build directory.
-	@test -d $(BuildDirectory) || $(MakeDirCommand) $(BuildDirectory)
+all: $(TARGET) size
 
-$(BuildDirectory)/.d:
-	@test -d $(BuildDirectory) || $(MakeDirCommand) $(BuildDirectory)
-	@echo Done.;
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) -o $@
 
-##
-## Clean
-##
+%.rel: %.s
+	$(AS) $(ASFLAGS) $<
+
+%.rel: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+flash: $(TARGET)
+	stm8flash -c stlinkv2 -p $(MCU) -w $(TARGET)
+
 clean:
-	@echo Cleaning up build directory...
-	$(RM) $(BuildDirectory)/*.*
-	@echo Done.;
+	rm -f *.map *.rel *.ihx *.o *.sym *.lk *.lst *.rst *.cdb *.bin *.asm
+
+size:
+	@$(OBJCOPY) -I ihex --output-target=binary $(TARGET) $(TARGET).bin
+	@echo "-----\nImage size:"
+	@stat -L -c %s $(TARGET).bin
+
+## @TODO: separate option-bytes for stm8s and stm8l!
+# enable write-protection on first 10 pages
+opt-set:
+	@echo '0x00 0x09 0xf6 0x00 0xff 0x00 0xff 0x00 0xff 0x00 0xff' | xxd -r > opt.bin
+	stm8flash -c stlinkv2 -p stm8s003f3 -s opt -w opt.bin
+
+# reset option-bytes to factory defaults
+opt-reset:
+	@echo '0x00 0x00 0xff 0x00 0xff 0x00 0xff 0x00 0xff 0x00 0xff' | xxd -r > opt.bin
+	stm8flash -c stlinkv2 -p stm8s003f3 -s opt -w opt.bin
+
+dump-opt:
+	stm8flash -c stlinkv2 -p $(MCU) -s opt -r dump_opt.bin
+
+dump-flash:
+	stm8flash -c stlinkv2 -p $(MCU) -s flash -r dump_flash.bin
+
+erase:
+	tr '\000' '\377' < /dev/zero | dd of=empty.bin bs=8192 count=1
+	stm8flash -c stlinkv2 -p $(MCU) -s flash -w empty.bin
+
+.PHONY: clean all flash size dump-opt dump-flash erase

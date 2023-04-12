@@ -1,0 +1,59 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 1.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  002710 L
+    .__.ABS.                                                    =  000000 G
+    .__.CPU.                                                    =  000000 L
+    .__.H$L.                                                    =  000001 L
+  9 _EXTI2_handler                                                 000079 GR
+  8 __xinit__data_buffer                                           000001 R
+  8 __xinit__data_buffer_send                                      000006 R
+  8 __xinit__data_counter                                          000000 R
+  8 __xinit__data_counter_send                                     000008 R
+  8 __xinit__empty_bit_send                                        000009 R
+  8 __xinit__pause_bit_send                                        00000C R
+  8 __xinit__received_data                                         000005 R
+  8 __xinit__received_data_flag                                    000004 R
+  8 __xinit__start_bit                                             000003 R
+  8 __xinit__start_bit_send                                        00000A R
+  8 __xinit__stop_bit_send                                         00000B R
+  2 _data_buffer                                                   000001 GR
+  2 _data_buffer_send                                              000006 GR
+  2 _data_counter                                                  000000 GR
+  2 _data_counter_send                                             000008 GR
+  9 _disableButton2interrupt                                       00002E GR
+  2 _empty_bit_send                                                000009 GR
+  9 _enableButton2interrupt                                        000029 GR
+  9 _initSerialReceiver                                            000000 GR
+  2 _pause_bit_send                                                00000C GR
+  2 _received_data                                                 000005 GR
+  2 _received_data_flag                                            000004 GR
+  9 _receiver_Handle                                               000041 GR
+  9 _receiver_data                                                 00001F GR
+  9 _serial_sender_byte                                            00005D GR
+  9 _setButton3stateHIGH                                           000033 GR
+  9 _setButton3stateLOW                                            000038 GR
+  2 _start_bit                                                     000003 GR
+  2 _start_bit_send                                                00000A GR
+  2 _stop_bit_send                                                 00000B GR
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+Hexadecimal [24-Bits]
+
+Area Table
+
+   0 _CODE                                      size      0   flags    0
+   1 DATA                                       size      0   flags    0
+   2 INITIALIZED                                size      D   flags    0
+   3 DABS                                       size      0   flags    8
+   4 HOME                                       size      0   flags    0
+   5 GSINIT                                     size      0   flags    0
+   6 GSFINAL                                    size      0   flags    0
+   7 CONST                                      size      0   flags    0
+   8 INITIALIZER                                size      D   flags    0
+   9 CODE                                       size     7D   flags    0
+   A CABS                                       size      0   flags    8
+
