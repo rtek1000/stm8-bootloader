@@ -5,4 +5,4 @@ Tested on W1209 board
 - RX: Button (+)
 - TX: Button (-)
 - Bootloader Entry: Button SET
-- Bootloader timeout: 1.02s
+- Bootloader timeout: 1.02s (IWDG)
