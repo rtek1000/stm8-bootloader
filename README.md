@@ -86,6 +86,8 @@ $ python ../uploader/boot.py -p /dev/ttyUSB0 firmware.bin
 ## Uploading the firmware using ST-link
 
 - The bootloader starts at address 0x8000, and if it does not enter update mode, it jumps to the application address.
+- The bootloader must be made to jump to the correct application start address.
+- The bootloader can also be made so that there are more than one application, and the bootloader can select which one to launch.
 - The [stm8flash](https://github.com/vdudouyt/stm8flash) allows you to direct the start of firmware programming, by default it is 0x8000, but you can use the directive -s 0x8000 for example.
 - To test the bootloader whether the bootloader is jumping to the application address, you can program the bootloader and application using ST-link:
 
