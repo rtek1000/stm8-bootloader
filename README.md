@@ -73,6 +73,6 @@ $ cd app && make
 $ python ../uploader/boot.py -p /dev/ttyUSB0 firmware.bin
 ```
 
-## Note: 
+-------------
 
-- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+Note: This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
