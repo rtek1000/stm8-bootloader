@@ -72,3 +72,7 @@ There is a demo application inside `app` directory (0x83C0) which toggles PA3 (R
 $ cd app && make
 $ python ../uploader/boot.py -p /dev/ttyUSB0 firmware.bin
 ```
+
+## Note: 
+
+- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
