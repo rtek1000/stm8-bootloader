@@ -68,7 +68,7 @@ $ python ../uploader/boot.py -p /dev/ttyUSB0 firmware.bin
 
 - Bootloader: [USART_Software](https://github.com/rtek1000/stm8-bootloader/tree/master/USART_Software)
 
-There is a demo application inside `app` directory (0x83C0) which toggles PA3 (Relay) via interrupts. To upload the application short PC3 to ground (press SET button), power-cycle the MCU and run the uploader utility. DTR pin on UART-USB converter (TTL level only: 5V) can be connected to RESET pin on STM8 for automatic reset (RESET connection is close to the display).
+There is a demo application inside `app` directory (0x83C0) which toggles PA3 (Relay) via interrupts. To upload the application short PC3 to ground (press SET button), power-cycle the MCU and run the uploader utility. DTR pin on UART-USB converter (TTL level only: 5V) can be connected to RESET pin on STM8 for automatic reset (RESET connection is close to the display: NRST).
 
 (boot-9600.py: 9600 bauds)
 
