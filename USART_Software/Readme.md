@@ -4,5 +4,5 @@ Tested on W1209 board
 - Serial TTL 5V
 - RX: Button (+)
 - TX: Button (-)
-- Bootloader Entry: Button SET
+- Bootloader Entry: Button SET (Hold pressed)
 - Bootloader timeout: 1.02s (IWDG)
