@@ -46,7 +46,7 @@ def bootloader_enter(ser):
     return ser
 
 def bootloader_exec(port, baud):
-    ser = serial.Serial(port, 9600, timeout=1.0)
+    ser = serial.Serial(port, 9600, timeout=2.0)
     bootloader_enter(ser)
     data = open(FILE, 'rb')
     total = 0
